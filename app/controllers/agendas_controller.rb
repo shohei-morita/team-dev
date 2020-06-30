@@ -6,7 +6,6 @@ class AgendasController < ApplicationController
   end
 
   def new
-    @team = Team.friendly.find(params[:team_id])
     @agenda = Agenda.new
   end
 
@@ -24,6 +23,7 @@ class AgendasController < ApplicationController
   def destroy
     set_agenda
     if @agenda.team.owner_id == current_user.id || @agenda.user_id == current_user.id
+      AgendaMailer.agenda_mail(@agenda).deliver
       @agenda.destroy
       redirect_to dashboard_url, notice: I18n.t('views.messages.destroy_agenda')
     else
