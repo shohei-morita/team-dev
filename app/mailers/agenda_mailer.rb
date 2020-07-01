@@ -3,8 +3,8 @@ class AgendaMailer < ApplicationMailer
 
   def agenda_mail(agenda)
     @agenda = agenda
-    #@agenda.team.members.each do |member|
-      mail to: agenda.team.members.email, subject: "アジェンダ削除のお知らせ"
+    @agenda.team.members.each do |notification|
+      mail to: notification.team.members.email, subject: "アジェンダ削除のお知らせ"
     end
   end
-#end
+end
