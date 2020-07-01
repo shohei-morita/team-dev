@@ -3,7 +3,7 @@
   <%= link_to dashboard_url, class: 'brand-link' do %>
     <span class="brand-text font-weight-light">DIVE INTO POST</span>
   <% end %>
-
+  <% @agenda %>
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="user-panel mt-3 pb-3 mb-3">
@@ -30,13 +30,17 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <% @working_team.agendas.each do |agenda| %>
           <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link">
+            <a href="#" class="nav-link d-inline-flex">
               <i class="fa fa-circle-o nav-icon"></i>
-              <p>
+              <p style="margin-right: 40px;">
                 <%= agenda.title %>
                 <i class="right fa fa-angle-left"></i>
               </p>
+              <p class="btn btn-danger d-inline-flex", style="margin-left: 10px; padding-left: 0px; padding-right: 25px;">
+                <%= link_to I18n.t('views.button.delete'), agenda_path(agenda.id), method: :delete, data: {confirm: 'Are you sure?'} %>
+              </p>
             </a>
+
             <ul class="nav nav-treeview" style="display: block;">
               <% agenda.articles.each do |article| %>
                 <li class="nav-item">
