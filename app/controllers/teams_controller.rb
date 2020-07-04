@@ -49,6 +49,7 @@ class TeamsController < ApplicationController
 
   def give_authority
     if @team.update(team_authority_params)
+      AuthorityChangeNotificationMailer.authority_change_notification_mail(@team).deliver
       redirect_to team_url, notice: 'リーダー権限を移動しました！'
     else
       redirect_to team_url, notice: 'リーダー権限の移動に失敗しました'
