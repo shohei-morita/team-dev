@@ -38,26 +38,28 @@
               <table class="table">
                 <tbody>
                   <% @team.assigns.each do |assign| %>
-                    <tr>
-                      <td><%= image_tag 'default.jpg', size: '40x40' %></td>
-                      <td><%= assign.user.email %></td>
-                      <td>
-                        <% if (current_user.id == assign.team.owner.id) && ( current_user.id != assign.user.id ) %>
-                          <%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %>
-                        <% end %>
-                      </td>
-                      <td>
-                        <% if (current_user.id == assign.team.owner.id) && ( current_user.id != assign.user.id )  %>
-                          <%= form_with model: @team, local: true, url: give_authority_team_path do |f| %>
-                            <%= f.hidden_field :name %>
-                            <%= f.hidden_field :icon %>
-                            <%= f.hidden_field :icon_cache %>
-                            <%= f.hidden_field :owner_id, value: assign.user.id %>
-                            <%= f.submit '権限移動', class: 'btn btn-sm btn-info'%>
+                    <% unless (assign.user.id == current_user.id) && (assign.team.owner.id == current_user.id) %>
+                      <tr>
+                        <td><%= image_tag 'default.jpg', size: '40x40' %></td>
+                        <td><%= assign.user.email %></td>
+                        <td>
+                          <% if (current_user.id == assign.team.owner.id) && ( current_user.id == assign.user.id ) %>
+                            <%= link_to I18n.t('views.button.delete'), team_assign_path(@team, assign), method: :delete, class: 'btn btn-sm btn-danger' %>
                           <% end %>
-                        <% end %>
-                      </td>
-                    </tr>
+                        </td>
+                        <td>
+                          <% if (current_user.id == assign.team.owner.id) && ( current_user.id != assign.user.id )  %>
+                            <%= form_with model: @team, local: true, url: give_authority_team_path do |f| %>
+                              <%= f.hidden_field :name %>
+                              <%= f.hidden_field :icon %>
+                              <%= f.hidden_field :icon_cache %>
+                              <%= f.hidden_field :owner_id, value: assign.user.id %>
+                              <%= f.submit '権限移動', class: 'btn btn-sm btn-info'%>
+                            <% end %>
+                          <% end %>
+                        </td>
+                      </tr>
+                    <% end %>
                   <% end %>
                 </tbody>
               </table>
